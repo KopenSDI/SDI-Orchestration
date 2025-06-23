@@ -176,7 +176,7 @@ sdi-scheduler-test.yaml 파일 6번째줄 처럼 schedulerName: `schedulerName: 
 #### 배포
 
 ```bash
-cd ../engine
+cd ../orchestration-engines
 kubectl apply -f orchestration-engines-deploy.yaml
 
 ```
