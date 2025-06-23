@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sdi-workload-3
+spec:
+  schedulerName: sdi-scheduler   # spec.schedulerName에 sdi-scheduler 넣으면 해당 스케줄러로 동작
+  containers:
+  - name: pause
+    image: registry.k8s.io/pause:3.9

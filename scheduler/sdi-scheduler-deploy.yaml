@@ -1,0 +1,97 @@
+# 1) ServiceAccount
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sdi-scheduler
+  namespace: kube-system
+---
+# 2) ClusterRole (Pods 조회·바인딩 권한)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sdi-scheduler
+rules:
+- apiGroups: [""]
+  resources: ["pods", "nodes"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["pods/binding", "bindings"]
+  verbs: ["create"]
+---
+# 3) ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sdi-scheduler
+subjects:
+- kind: ServiceAccount
+  name: sdi-scheduler
+  namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: sdi-scheduler
+  apiGroup: rbac.authorization.k8s.io
+---
+# 4) InfluxDB Secret (토큰)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sdi-influx-creds
+  namespace: kube-system
+type: Opaque
+stringData:
+  token: <디비 토큰 값 입력 - README 참고> # 직접 작성
+---
+# 5) InfluxDB 접속 정보 ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: monitoring-metric-data-cm  
+  namespace: kube-system
+data:
+  INFLUX_URL:  "http://influxdb.tbot-monitoring.svc.cluster.local:8086"
+  INFLUX_ORG:  "keti"
+  INFLUX_BUCKET: "turtlebot"
+---
+# 6) Scheduler Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sdi-scheduler
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sdi-scheduler
+  template:
+    metadata:
+      labels:
+        app: sdi-scheduler
+    spec:
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: "true"
+
+      serviceAccountName: sdi-scheduler
+      containers:
+      - name: scheduler
+        image: ketidevit2/sdi-scheduler:0.7
+        imagePullPolicy: IfNotPresent
+
+        env:
+        - name: SCHEDULER_NAME
+          value: "sdi-scheduler"
+        - name: INFLUX_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: sdi-influx-creds
+              key: token
+
+        envFrom:
+        - configMapRef:
+            name: monitoring-metric-data-cm        
+        - secretRef:
+            name: sdi-influx-creds

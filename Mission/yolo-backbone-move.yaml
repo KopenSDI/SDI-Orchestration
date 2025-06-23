@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yolov5-backbone
+spec:
+  template:
+    spec:
+      containers:
+      - name: backbone
+        image: your-registry/backbone:latest
+        env:
+        - name: PROCESS_URL
+          value: "http://neck-head-service.default.svc.cluster.local:8080/process_neck_head" 
+        - name: FASTAPI_SERVER_URL
+          value: "http://fastapi-service.default.svc.cluster.local:8000/upload_image" 
+        - name: CAMERA_ID        # 필요하면 웹캠 번호 교체
+          value: "0"
+        - name: SEND_INTERVAL_SEC
+          value: "0.5"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: turtlebot-move-logger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: turtlebot-move-logger
+  template:
+    metadata:
+      labels:
+        app: turtlebot-move-logger
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
+
+      containers:
+        - name: logger
+          image: ketidevit2/turtlebot-move:1.0
+          env:
+            - name: UPDATE_PERIOD_SEC
+              value: "0.5"
+          resources:
+            limits:
+              cpu: 100m
+              memory: 64Mi
+            requests:
+              cpu: 50m
+              memory: 32Mi
