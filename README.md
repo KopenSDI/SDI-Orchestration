@@ -120,7 +120,7 @@ kubectl apply -f tbot-monitoring.yaml
 kubectl get pods -n tbot-monitoring # 또는 k9s
 ```
 
-<img src="https://github.com/user-attachments/assets/47e675a8-86f8-44a7-be2f-a90d9e9d2f97" width="600" height="84"/>
+<img src="https://github.com/user-attachments/assets/b9179b38-c86b-499d-863e-2dbedc65a98f" width="600" height="84"/>
 
 ### 스케줄러 컴포넌트&#x20;
 
@@ -133,13 +133,13 @@ kubectl get pods -n tbot-monitoring # 또는 k9s
 
 브라우저에서 `http://<CONTROL‑PLANE_IP>:32086` 접속 이후 아래 이미지 대로 따라가시면 됩니다.
 
- <img src="https://github.com/user-attachments/assets/deab7d73-dbdc-4378-bd6b-adbfc63aedae" width="600" height="993"/>
+<img src="https://github.com/user-attachments/assets/70ee4b68-8e59-4d4a-8c70-00e5da9ea8da" width="600" height="993"/>
 
 
 #### 배포 파일 수정
 
 ```bash
-cd ../../scheduler
+cd ../scheduler
 vi sdi-scheduler-deploy.yaml   # 43행 주석에“직접 설정” 적혀있는 부분에 복사한 토큰 값 넣기
 ```
 
@@ -155,12 +155,12 @@ kubectl apply -f sdi-scheduler-deploy.yaml
 kubectl get pod -n kube-system # 또는 k9s
 ```
 
-<img src="https://github.com/user-attachments/assets/ff5c0f17-8394-4487-932e-1e90a319f122" width="600" height="197"/>
+<img src="https://github.com/user-attachments/assets/44763c49-a7b8-42c6-9e1d-e1694b443e20" width="600" height="197"/>
 
 
 스케줄링시 로그(로그 확인 방법 하단 기술)
 
-<img src="https://github.com/user-attachments/assets/56a93d54-bfac-4b7a-ba47-7acfd95b2c1d" width="600" height="183"/>
+<img src="https://github.com/user-attachments/assets/fa85592d-3de4-484c-a1d8-17e0f1e1148d" width="600" height="183"/>
 
 
 #### 스케줄러 사용법
@@ -189,17 +189,15 @@ kubectl apply -f orchestration-engines-deploy.yaml
 ```bash
 kubectl get pod -n orchestration-engines   # 또는 k9s
 ```
-
-<img src="https://github.com/user-attachments/assets/06315652-55db-4e3f-abb3-a73b3b4c914b" width="600" height="70"/>
----
+<img src="https://github.com/user-attachments/assets/bf82b4eb-074e-4e24-8d6f-567c46713f7d" width="600" height="70"/>
 
 analysis-engine로그(로그 확인 방법 하단 기술)
 
-<img src="https://github.com/user-attachments/assets/783d2214-f865-4791-ba4a-de03d26dbc30" width="600" height="161"/>
+<img src="https://github.com/user-attachments/assets/f3577863-1e5c-412c-9940-c9408715e1de" width="600" height="161"/>
 
 policy-engine로그(로그 확인 방법 하단 기술)
 
-<img src="https://github.com/user-attachments/assets/434c8d1a-6c3d-4836-ac3e-984078a40a0a" width="600" height="137"/>
+<img src="https://github.com/user-attachments/assets/91618f83-2197-46e9-af5e-73ddc9d485cc" width="600" height="137"/>
 
 ## 6. 로그 확인&#x20;
 
