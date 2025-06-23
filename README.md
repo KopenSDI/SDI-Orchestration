@@ -39,7 +39,7 @@ SDI-Orchestration/
 | **orchestration-engines/**              | **analysis‑engine**·**policy‑engine** 두 Deployment 를 정의한다.                                                       |
 | **profiling/tbot-monitoring.yaml**      | metric-collector + InfluxDB + metrics‑ingester Deployment 및 관련 Secret·Service 를 일괄 정의한다.                         |
 | **scheduler/sdi‑scheduler‑deploy.yaml** | ServiceAccount·ClusterRole·Binding + Deployment 로 구성된 **SDI Scheduler** 매니페스트다. 터틀봇 배터리 및 위치정보를 기반하여 스케줄링을 진행한다. |
-| **scheduler/sdi‑scheduler‑test.yaml**   | `schedulerName: sdi-scheduler` 스케줄러 동작 여부를 즉시 확인할 수 있는 간단한 워크로드 이다.                                              |
+| **scheduler/check-sdi-scheduler.yaml.yaml**   | `schedulerName: sdi-scheduler` 스케줄러 동작 여부를 즉시 확인할 수 있는 간단한 워크로드 이다.                                              |
 
 ---
 
@@ -165,7 +165,10 @@ kubectl get pod -n kube-system # 또는 k9s
 
 #### 스케줄러 사용법
 
-sdi-scheduler-test.yaml 파일 6번째줄 처럼 schedulerName: `schedulerName: sdi-scheduler`를 적고 사용하면됩니다.(주석 확인)
+check-sdi-scheduler.yaml 파일 6번째줄 처럼 schedulerName: `schedulerName: sdi-scheduler`를 적고 사용하면됩니다.(주석 확인)
+```bash
+kubectl apply -f check-sdi-scheduler.yaml  # sdi-scheduler 확인인
+```
 
 ### 오케스트레이션 엔진&#x20;
 
