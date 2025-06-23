@@ -273,4 +273,4 @@ kubectl apply -f yolo-backbone-move.yaml
 
 
 ## 설치 완료 후 터틀봇 설치 진행
-- 터틀봇 필수 프로세스 설치: [https://github.com/sungmin306/SDI-Turtlebot-Setting](https://github.com/KopenSDI/SDI-Turtlebot-Setting)
+- 터틀봇 필수 프로세스 설치: [https://github.com/KopenSDI/SDI-Turtlebot-Setting](https://github.com/KopenSDI/SDI-Turtlebot-Setting)
