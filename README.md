@@ -177,7 +177,7 @@ kubectl get pod -n kube-system # 또는 k9s
 
 test-SDI-Scheduler.yaml 파일 6번째줄 처럼 schedulerName: `schedulerName: sdi-scheduler`를 적고 사용하면됩니다.(주석 확인)
 ```bash
-kubectl apply -f test-SDI-Scheduler.yaml  # sdi-scheduler 확인인
+kubectl apply -f test-SDI-Scheduler.yaml  # sdi-scheduler 확인
 ```
 
 ### 오케스트레이션 엔진&#x20;
