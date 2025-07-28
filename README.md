@@ -186,7 +186,7 @@ kubectl apply -f test-SDI-Scheduler.yaml  # sdi-scheduler 확인
 
 `analysis-engine`이 포함되어있으며, 스케줄링 후 워크로드 분석 기반 워크로드-노드 배치 결정하는 모듈이다.
 
-#### `MALE-Profiler/MALE Profiler-deploy.yaml`
+#### `MALE-Profiler/MALE-Profiler-deploy.yaml`
 
 `policy-engine`이이 포함되어있으며, MALE 기반 정책 설정하는 모듈이다.
 
