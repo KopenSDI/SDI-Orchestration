@@ -58,14 +58,17 @@ Control-plane(터틀봇 원격 PC) 의 주요 소프트웨어 및 버전 정보 
 
 ## 3. 컴포넌트 역할
 
-| 컴포넌트                    | 설명                                               |
-| ----------------------- | ------------------------------------------------ |
-| 🗓️ **sdi-scheduler**   | turtlebot 배터리(Wh) 및 위치정보 기반 커스텀 스케줄러             |
-| 🔄 **metric-collector** | TurtleBot 및 시스템 메트릭을 Metric-Collector 큐에 적재하는 모듈 |
-| 🗄️ **influxdb**        | 수집된 시계열 메트릭을 영구 저장하는 InfluxDB 데이터베이스             |
-| 📥 **metrics-ingester** | Metric-Collector 큐에서 메트릭 메시지를 소비해 InfluxDB에 기록   |
-| 🔎 **analysis-engine**  | 다양한 로그 및 메트릭 분석 엔진                               |
-| ⚖️ **policy-engine**    | 분석 결과 기반으로 MALE 정책을 적용해 시스템 동작을 제어하는 엔진          |
+| 모듈                         | 설명                                                       |
+|----------------------------|----------------------------------------------------------|
+| 🏗️ **IaC Provider**         | IaC 기반 워크로드 YAML 자동 생성 및 자동 배포 모듈                  |
+| 🖥️ **API Server**           | 워크로드 관리 및 워크로드 상태 결정 모듈                            |
+| 🔧 **Resource Controller**  | 워크로드 CR(CustomResource) 인스턴스 관리 모듈                     |
+| 📊 **Metric Collector**     | TurtleBot 및 시스템 메트릭 수집 모듈                              |
+| 🔍 **MALE Profiler**        | 수집된 메트릭 기반 워크로드 프로파일링 모듈                         |
+| 🗓️ **SDI Scheduler**        | 혼합 중요도 기반 워크로드 스케줄링 수행 모듈                       |
+| 🧭 **MALE Advisor**         | A‑L‑E Score 기반 MALE 정책 결정 모듈                              |
+| 🚀 **SDx Manager**          | SDx 워크로드 오토스케일링 및 마이그레이션 관리 모듈               |
+
 
 ## 4. 오케스트레이션 구성
 
