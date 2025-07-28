@@ -23,23 +23,30 @@
 
 ```text
 SDI-Orchestration/
-├── README.md                      # ← 현재 문서
-├── orchestration-engines/         # Analysis/Policy‑Engine 배포 YAML 보관
-│   └── orchestration-engines-deploy.yaml
-├── profiling/                     # 메트릭 수집 · 적재 스택 매니페스트
-│   └── tbot-monitoring.yaml       # 메트릭콜렉터 필요 모듈 및 · InfluxDB 포함
-├── scheduler/                     # 커스텀 스케줄러 코드 & 배포 파일
-│   ├── sdi-scheduler-deploy.yaml  # SDI‑Scheduler Deployment · RBAC
-│__ └── check-sdi-scheduler.yaml   # 스케줄러 동작 검증용 워크로드
+├── MALE-Advisor/             # MALE 기반 Advisor 파일    
+│   └── MALE-Advisor-deploy.yaml   # Policy Engine Deployemnt
+├── MALE-Profiler/           # MALE 기반 Profiler 파일     
+│   └── MALE-Profiler-deploy.yaml  # Analysis Engine Deployemnt
+├── Metric-Collector/            # 메트릭 수집 · 적재 스택 매니페스트
+│   └── Metric-Collector-deploy.yaml  # 메트릭콜렉터 필요 모듈 및 · InfluxDB 포함     
+├── Mission/                      # 미션 yaml
+│   ├── fastapi_image_server.yaml # show yolo image server
+│   ├── yolo-backbone-move.yaml   # yolo backbnone-layer Deployment
+│   └── yolo-neck-head.yaml       # yolo neck&head layer Deploymen
+├── SDI-Scheduler/   # SDI스케줄러  배포 파일             
+│   ├── SDI-Scheduler-deploy.yaml # SDI‑Scheduler Deployment · RBAC
+│   └── test-SDI-Scheduler.yaml # 스케줄러 동작 검증용 워크로드   
+└── README.md      # 현재 문서                
 
 ```
 
 | 경로                                      | 설명                                                                                                               |
 | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| **orchestration-engines/**              | **analysis‑engine**·**policy‑engine** 두 Deployment 를 정의한다.                                                       |
-| **profiling/tbot-monitoring.yaml**      | metric-collector + InfluxDB + metrics‑ingester Deployment 및 관련 Secret·Service 를 일괄 정의한다.                         |
-| **scheduler/sdi‑scheduler‑deploy.yaml** | ServiceAccount·ClusterRole·Binding + Deployment 로 구성된 **SDI Scheduler** 매니페스트다. 터틀봇 배터리 및 위치정보를 기반하여 스케줄링을 진행한다. |
-| **scheduler/check-sdi-scheduler.yaml.yaml**   | `schedulerName: sdi-scheduler` 스케줄러 동작 여부를 즉시 확인할 수 있는 간단한 워크로드 이다.                                              |
+| **MALE-Advisor/MALE-Advisor-deploy.yaml**              | **policy‑engine**  Deployment 를 정의한다.                                                       |
+| **MALE-Profiler/MALE Profiler-deploy.yaml**              | **analysis‑engine**  Deployment 를 정의한다.                                                       |
+| **Metric-Collector/Metric-Collector-deploy.yaml**      | metric-collector + InfluxDB + metrics‑ingester Deployment 및 관련 Secret·Service 를 일괄 정의한다.                         |
+| **SDI-Scheduler/sdi‑scheduler‑deploy.yaml** | ServiceAccount·ClusterRole·Binding + Deployment 로 구성된 **SDI Scheduler** 매니페스트다. 터틀봇 배터리 및 위치정보를 기반하여 스케줄링을 진행한다. |
+| **SDI-Scheduler/test-SDI-Scheduler.yaml**   | `schedulerName: SDI-Scheduler` 스케줄러 동작 여부를 즉시 확인할 수 있는 간단한 워크로드 이다.                                              |
 
 ---
 
@@ -105,16 +112,16 @@ cp /etc/rancher/k3s/k3s.yaml ~/.kube/config  # k9s에서 k3s 클러스터 조회
 
 ```bash
 git clone https://github.com/sungmin306/SDI-Orchestration.git
-cd SDI-Orchestration/profiling/
+cd SDI-Orchestration/Metric-Collector/
 
 # 주석 “직접 설정” 적힌 부분(12·13·21·22행) id,pw 설정
-vi tbot-monitoring.yaml
+vi Metric-Collector-deploy.yaml
 ```
 
 #### 배포
 
 ```bash
-kubectl apply -f tbot-monitoring.yaml
+kubectl apply -f Metric-Collector-deploy.yaml
 ```
 
 컴포넌트 상태는 다음과 같이 확인할 수 있습니다.
@@ -127,7 +134,7 @@ kubectl get pods -n tbot-monitoring # 또는 k9s
 
 ### 스케줄러 컴포넌트&#x20;
 
-#### `scheduler/sdi-scheduler-deploy.yaml`
+#### `SDI-Scheduler/SDI-Scheduler-deploy.yaml`
 
 - **ServiceAccount/RBAC** : `kube-system` 내부에서 PodBinding 권한만 최소 부여.
 - **Deployment** : ENV 로 Influx Endpoint / Token 주입하며 `schedulerName: sdi-scheduler` 로 호출.
@@ -142,14 +149,14 @@ kubectl get pods -n tbot-monitoring # 또는 k9s
 #### 배포 파일 수정
 
 ```bash
-cd ../scheduler
-vi sdi-scheduler-deploy.yaml   # 43행 주석에“직접 설정” 적혀있는 부분에 복사한 토큰 값 넣기
+cd ../SDI-Scheduler
+vi SDI-Scheduler-deploy.yaml  # 43행 주석에“직접 설정” 적혀있는 부분에 복사한 토큰 값 넣기
 ```
 
 #### 배포
 
 ```bash
-kubectl apply -f sdi-scheduler-deploy.yaml
+kubectl apply -f SDI-Scheduler-deploy.yaml
 ```
 
 상태 확인:
@@ -168,22 +175,31 @@ kubectl get pod -n kube-system # 또는 k9s
 
 #### 스케줄러 사용법
 
-check-sdi-scheduler.yaml 파일 6번째줄 처럼 schedulerName: `schedulerName: sdi-scheduler`를 적고 사용하면됩니다.(주석 확인)
+test-SDI-Scheduler.yaml 파일 6번째줄 처럼 schedulerName: `schedulerName: sdi-scheduler`를 적고 사용하면됩니다.(주석 확인)
 ```bash
-kubectl apply -f check-sdi-scheduler.yaml  # sdi-scheduler 확인인
+kubectl apply -f test-SDI-Scheduler.yaml  # sdi-scheduler 확인인
 ```
 
 ### 오케스트레이션 엔진&#x20;
 
-#### `orchestration-engines/orchestration-engines-deploy.yaml`
+#### `MALE-Advisor/MALE-Advisor-deploy.yaml`
 
-`analysis-engine` 과 `policy-engine` 두 Deployment 가 포함되어있으며, 스케줄링 후 워크로드 분석과 MALE 기반 정책 설정하는 워크로드이다.
+`analysis-engine`이 포함되어있으며, 스케줄링 후 워크로드 분석 기반 워크로드-노드 배치 결정하는 모듈이다.
+
+#### `MALE-Profiler/MALE Profiler-deploy.yaml`
+
+`policy-engine`이이 포함되어있으며, MALE 기반 정책 설정하는 모듈이다.
 
 #### 배포
 
 ```bash
-cd ../orchestration-engines
-kubectl apply -f orchestration-engines-deploy.yaml
+cd ../MALE-Advisor # MALE-Advisor 배포
+kubectl apply -f MALE-Advisor-deploy.yaml
+
+```
+```bash
+cd ../MALE-Profiler # MALE-profiler 배포
+kubectl apply -f MALE Profiler-deploy.yaml
 
 ```
 

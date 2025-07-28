@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: orchestration-engines
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: policy-engine
+  namespace: orchestration-engines
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: policy-engine }
+  template:
+    metadata:
+      labels: { app: policy-engine }
+    spec:
+      containers:
+      - name: policy
+        image: ketidevit2/policy-engine:1.0
+        resources:
+          limits: { cpu: "100m", memory: "128Mi" }
+        imagePullPolicy: IfNotPresent

@@ -21,7 +21,7 @@ stringData:
   username: <admin 설정> # 직접 설정
   password: <pw 설정정> # 직접 설정
 
-# ---------- metric-collector ----------
+# ---------- Metric-Collector depolyment ----------
 ---
 apiVersion: apps/v1
 kind: Deployment
