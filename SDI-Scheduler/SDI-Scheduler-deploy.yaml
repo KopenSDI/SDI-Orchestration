@@ -78,7 +78,7 @@ spec:
       serviceAccountName: sdi-scheduler
       containers:
       - name: scheduler
-        image: ketidevit2/sdi-scheduler:0.7
+        image: ketidevit2/sdi-scheduler:latest
         imagePullPolicy: IfNotPresent
 
         env:
